@@ -35,13 +35,30 @@
           <option value="">Select Category</option>
         </select>
 
-        <button type="submit" id="submitButton" disabled>Add Product</button> 
+        <button type="submit" id="submitButton" disabled>Add Product</button>
       </form>
       <ul id="itemList"></ul>
     </div>
 
     <div id="orders">
       <h2>Customer Orders</h2>
+
+      <form id="orderForm">
+        <input type="text" id="customerName" placeholder="Customer Name" required>
+        <input type="text" id="customerPhone" placeholder="Phone" required>
+        <input type="email" id="customerEmail" placeholder="Email" required>
+
+        <input type="text" id="addressL1" placeholder="Address Line 1" required>
+        <input type="text" id="city" placeholder="City" required>
+        <input type="text" id="province" placeholder="Province" required>
+        <input type="text" id="country" placeholder="Country" required>
+
+        <input type="text" id="courier" placeholder="Courier" required>
+        <input type="text" id="tracking" placeholder="Tracking Number" required>
+
+        <button type="submit">Place Order</button>
+      </form>
+
       <ul id="orderList"></ul>
     </div>
   </div>
