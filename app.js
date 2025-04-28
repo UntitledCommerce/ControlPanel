@@ -22,7 +22,8 @@ async function fetchOrders() {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
             <strong>Customer:</strong> ${order.name} <br>
-            <strong>Status:</strong> <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
+            <strong>Status:</strong> ${order.status} <br>
+            <button onclick="deleteOrder(${order.id})">Delete</button>
         `;
         orderList.appendChild(listItem);
     });
@@ -106,15 +107,68 @@ async function deleteProduct(sku) {
     } else {
         const errorText = await response.text();
         console.error('Failed to delete product:', errorText);
-        if (response.status !== 404) {
-            alert('Failed to delete product: ' + errorText);
-        } else {
-            // If 404, just refresh without alert
-            await fetchProducts();
-        }
+        alert('Failed to delete product: ' + errorText);
     }
 }
 
+async function addOrder(name, phone, email, addressL1, city, province, country, courier, tracking) {
+    const order = {
+        id: Math.floor(Math.random() * 1000000),
+        items: [
+            {
+                sku: 12345,
+                name: "Test Product",
+                price: 199.99,
+                quantity: 1
+            }
+        ],
+        name: name,
+        company: "",
+        phone: phone,
+        email: email,
+        address_l1: addressL1,
+        address_l2: "",
+        city: city,
+        province: province,
+        country: country,
+        courier: courier,
+        tracking: tracking,
+        delivery_message: "Please leave at front door",
+        status: "Pending"
+    };
+
+    const response = await fetch('http://localhost:8080/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+    });
+
+    if (response.ok) {
+        await fetchOrders();
+    } else {
+        const errorText = await response.text();
+        console.error('Failed to place order:', errorText);
+        alert('Failed to place order: ' + errorText);
+    }
+}
+
+async function deleteOrder(orderId) {
+    if (!confirm("Are you sure you want to delete this order?")) {
+        return;
+    }
+
+    const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
+        method: 'DELETE'
+    });
+
+    if (response.ok) {
+        await fetchOrders();
+    } else {
+        const errorText = await response.text();
+        console.error('Failed to delete order:', errorText);
+        alert('Failed to delete order: ' + errorText);
+    }
+}
 
 document.getElementById('itemForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -129,10 +183,30 @@ document.getElementById('itemForm').addEventListener('submit', function(e) {
     }
     addProduct(name, price, brand, category);
 
-    document.getElementById('itemName').value = '';
-    document.getElementById('itemPrice').value = '';
-    document.getElementById('itemBrand').value = '';
-    document.getElementById('itemCategory').value = '';
+    document.getElementById('itemForm').reset();
+});
+
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('customerName').value;
+    const phone = document.getElementById('customerPhone').value;
+    const email = document.getElementById('customerEmail').value;
+    const addressL1 = document.getElementById('addressL1').value;
+    const city = document.getElementById('city').value;
+    const province = document.getElementById('province').value;
+    const country = document.getElementById('country').value;
+    const courier = document.getElementById('courier').value;
+    const tracking = document.getElementById('tracking').value;
+
+    if (!name || !phone || !email || !addressL1 || !city || !province || !country || !courier || !tracking) {
+        alert('Please fill all fields.');
+        return;
+    }
+
+    addOrder(name, phone, email, addressL1, city, province, country, courier, tracking);
+
+    document.getElementById('orderForm').reset();
 });
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -159,4 +233,3 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-
