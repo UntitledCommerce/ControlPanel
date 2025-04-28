@@ -1,4 +1,7 @@
 # ControlPanel
-The UntitledCommerce Control Panel
+The UntitledCommerce Control Panel.
 
-Host with: `python3 -m http.server`
+## Installation instructions
+Make sure to install the backend at <https://github.com/UntitledCommerce/Backend> and make sure it's running locally
+
+Host with: `python3 -m http.server` or any other web server.
