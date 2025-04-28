@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <input type="text" id="loginUsername" placeholder="Username" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    
+    <div class="captcha">
+      <span id="captchaText"></span>
+      <button type="button" onclick="generateCaptcha()">Refresh</button>
+    </div>
+    <input type="text" id="captchaInput" placeholder="Enter CAPTCHA" required>
+
+    <button type="button" onclick="login()">Login</button>
+
+    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
